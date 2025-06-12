@@ -67,8 +67,10 @@ docker compose -f docker-compose.yml up --build     # If you alread have image, 
 # Or you can run a docker-compose at your backend
 docker compose -f docker-compose.yml up --build -d    # If you alread have image, you don't need '--build' option
 docker compose -f docker-compose.yml logs -f --tail 1000    # You can trace logs via this command
-docker compose -f docker-compose.yml down   # You can finish your docker-compose using this command
 
+# You can stop containers
+docker compose -f docker-compose.yml stop   # Use this command if you want to stop only
+docker compose -f docker-compose.yml down   # Use this command if you want to stop and delete containers
 ```
 
 &nbsp;
