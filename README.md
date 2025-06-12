@@ -2,7 +2,7 @@
 
 
 ### Recent updates 📣
-* *June 2025 (v0.0.1)*: 
+* *June 2025 (v0.0.1)*: Complete FHIR server running test. 
 
 &nbsp;
 
