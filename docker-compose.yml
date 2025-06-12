@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   fhir:
-    container_name: fhir_server
+    container_name: ${CONTAINER_NAME1}
     image: "hapiproject/hapi:latest"
     ports:
       - "8080:8080"
@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
   db:
-    container_name: fhir_db
+    container_name: ${CONTAINER_NAME2}
     image: postgres
     restart: always
     environment:
