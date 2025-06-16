@@ -1,11 +1,11 @@
-# FHIR Resource Schema
+# FHIR Resources
 Here, we present the schema of each resource type and its link ([reference](https://hl7.org/fhir/resourcelist.html)).
 > Based on HL7 FHIR Version 5.0 (as of 2025-06-11) 
 
 &nbsp;
 
 ## Resource Types
-### [Patient](https://hl7.org/fhir/patient.html)
+### 1. [Patient](https://hl7.org/fhir/patient.html)
 <details>
 <summary>Patient scheme</summary>
 
@@ -50,6 +50,32 @@ For more details for each data type of the schema, please see [here](https://hl7
     "other" : { Reference(Patient|RelatedPerson) }, // R!  The other patient or related person resource that the link refers to
     "type" : "<code>" // R!  replaced-by | replaces | refer | seealso
   }]
+}
+```
+</details>
+
+&nbsp;
+
+### 2. [Schedule](https://hl7.org/fhir/schedule.html)
+<details>
+<summary>Schedule scheme</summary>
+
+For more details for each data type of the schema, please see [here](https://hl7.org/fhir/schedule.html).
+```json
+{
+  "resourceType" : "Schedule",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // External Ids for this item
+  "active" : <boolean>, // Whether this schedule is in active use
+  "serviceCategory" : [{ CodeableConcept }], // High-level category
+  "serviceType" : [{ CodeableReference(HealthcareService) }], // Specific service
+  "specialty" : [{ CodeableConcept }], // Type of specialty needed
+  "name" : "<string>", // Human-readable label
+  "actor" : [{ Reference(CareTeam|Device|HealthcareService|Location|Patient|
+   Practitioner|PractitionerRole|RelatedPerson) }], // R!  Resource(s) that availability information is being provided for
+  "planningHorizon" : { Period }, // Period of time covered by schedule
+  "comment" : "<markdown>" // Comments on availability
 }
 ```
 </details>

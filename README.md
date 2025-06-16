@@ -1,5 +1,8 @@
 # FHIR
+In this repository, we introduce how to operate FHIR server in the local.
+Since we can also integrate PostgreSQL with a local FHIR server, medical data can be stored locally and reloaded automatically when the FHIR server restarts by simply mounting the database volume in Docker.
 
+&nbsp;
 
 ### Recent updates 📣
 * *June 2025 (v0.0.1)*: Complete FHIR server running test. 
@@ -13,45 +16,23 @@
 
 
 
-<!-- ## Quick Starts 🚀
-### Environment setup
-We have to install PyTorch and other requirements. Please refer to more [detailed setup](./docs/1_getting_started.md) including Docker.
+## Quick Starts 🚀
+You can quickly start the FHIR server using the command below, and access it at `localhost:8080` once it's running.
 ```bash
-# PyTorch Install
-pip3 install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124
-
-# Requirements Install
-pip3 install -r docker/requirements.txt
+docker pull hapiproject/hapi:latest
+docker run --name fhir_server -p 8080:8080 hapiproject/hapi:latest
 ```
+> [!NOTE]
+> If you want to store data locally by mounting PostgreSQL, use the Docker Compose method described below in the "Running a FHIR server" section.
 
 &nbsp;
 
-### Data preparation
-```bash
-python3 src/run/dataset_download.py --dataset allenai/ai2_arc --download_path data_examples
-```
-
 &nbsp;
 
-### LLM training
-```bash
-# Llama 3.1 8B LoRA fine-tuning
-python3 src/run/train.py --config config/example_llama3.1_lora.yaml --mode train
 
-# Llama 3.1 8B QLoRA fine-tuning
-python3 src/run/train.py --config config/example_llama3.1_qlora.yaml --mode train
-
-# Llama 3.1 8B full fine-tuning
-python3 src/run/train.py --config config/example_llama3.1_full.yaml --mode train
-```
-
-&nbsp;
-
-&nbsp; -->
-
-
-## Tutorials & Documentations
+## Tutorials & Documentations 🔍
 1. [Running a FHIR server](./docs/1_fhir_server.md)
+2. [FHIR resources](./docs/2_fhir_resources.md)
 
 &nbsp;
 

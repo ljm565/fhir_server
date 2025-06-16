@@ -6,7 +6,7 @@ Here, we introduce how to run a FHIR server locally.
 
 ## Running a FHIR Serever
 ### 1. Runnig via Docker
-You can simply run a FHIR server via Dokcer commands:
+You can simply run the FHIR server using the command below, and access it at `localhost:8080` once it's running.
 ```bash
 docker pull hapiproject/hapi:latest
 
@@ -59,7 +59,7 @@ configs:
 ```
 </details>
 
-<br>After completing the `docker-compose.yml` file, you can run a FHIR server using it:
+<br>After completing the `docker-compose.yml` file, you can run a FHIR server using it. Then you are able to access a FHIR server at `localhost:8080` once it's running.
 ```bash
 # Base execution
 docker compose -f docker-compose.yml up --build     # If you alread have image, you don't need '--build' option
