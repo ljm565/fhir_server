@@ -5,8 +5,9 @@ Since we can also integrate PostgreSQL with a local FHIR server, medical data ca
 &nbsp;
 
 ### Recent updates 📣
-* *June 2025 (v1.0.0)*: Update documents. 
-* *June 2025 (v0.0.1)*: Complete FHIR server running test. 
+* *June 2025 (v1.0.1)*: Add an example of a `Location` resource type.
+* *June 2025 (v1.0.0)*: Documents updated.
+* *June 2025 (v0.0.1)*: Completed FHIR server running test. 
 
 &nbsp;
 
