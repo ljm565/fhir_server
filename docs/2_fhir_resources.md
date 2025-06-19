@@ -4,8 +4,493 @@ Here, we present the schema of each resource type and its link ([reference](http
 
 &nbsp;
 
-## Resource Types
-### 1. [Patient](https://hl7.org/fhir/patient.html)
+## Resource Type Examples
+### Workflow
+#### 1. [Appointment](https://hl7.org/fhir/appointment.html)
+Reference resource type:
+* `Slot`
+* `CareTeam|Device|Group|HealthcareService|Location|Patient|Practitioner|PractitionerRole|RelatedPerson`
+* ...
+><details>
+><summary>Appointment scheme</summary>
+>A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
+>
+><br>Appointment resources are used to provide information about a planned meeting that may be in the future or past.
+>The resource only describes a single meeting, a series of repeating visits would require multiple appointment resources to be created for each instance.
+>Examples include a scheduled surgery, a follow-up for a clinical visit, a scheduled conference call between clinicians to discuss a case (where the patient is a subject, but not a participant), the reservation of a piece of diagnostic equipment for a particular use, etc.
+>The visit scheduled by an appointment may be in person or remote (by phone, video conference, etc.)
+>All that matters is that the time and usage of one or more individuals, locations and/or pieces of equipment is being fully or partially reserved for a designated period of time.
+>
+><br>This definition takes the concepts of appointments in a clinical setting and also extends them to be relevant in the community healthcare space, and to ease exposure to other appointment / calendar standards widely used outside of healthcare.
+>
+>For more details for each data type of the schema, please see [here](https://hl7.org/fhir/appointment.html).
+>```json
+>{
+>  "resourceType" : "Appointment",
+>  // from Resource: id, meta, implicitRules, and language
+>  // from DomainResource: text, contained, extension, and modifierExtension
+>  "identifier" : [{ Identifier }], // External Ids for this item
+>  "status" : "<code>", // I R!  proposed | pending | booked | arrived | fulfilled | cancelled | noshow | entered-in-error | checked-in | waitlist
+>  "cancellationReason" : { CodeableConcept }, // I The coded reason for the appointment being cancelled
+>  "class" : [{ CodeableConcept }], // Classification when becoming an encounter icon
+>  "serviceCategory" : [{ CodeableConcept }], // A broad categorization of the service that is to be performed during this appointment
+>  "serviceType" : [{ CodeableReference(HealthcareService) }], // The specific service that is to be performed during this appointment
+>  "specialty" : [{ CodeableConcept }], // The specialty of a practitioner that would be required to perform the service requested in this appointment
+>  "appointmentType" : { CodeableConcept }, // The style of appointment or patient that has been booked in the slot (not service type) icon
+>  "reason" : [{ CodeableReference(Condition|ImmunizationRecommendation|
+>   Observation|Procedure) }], // Reason this appointment is scheduled
+>  "priority" : { CodeableConcept }, // Used to make informed decisions if needing to re-prioritize icon
+>  "description" : "<string>", // Shown on a subject line in a meeting request, or appointment list
+>  "replaces" : [{ Reference(Appointment) }], // Appointment replaced by this Appointment
+>  "virtualService" : [{ VirtualServiceDetail }], // Connection details of a virtual service (e.g. conference call)
+>  "supportingInformation" : [{ Reference(Any) }], // Additional information to support the appointment
+>  "previousAppointment" : { Reference(Appointment) }, // The previous appointment in a series
+>  "originatingAppointment" : { Reference(Appointment) }, // I The originating appointment in a recurring set of appointments
+>  "start" : "<instant>", // I When appointment is to take place
+>  "end" : "<instant>", // I When appointment is to conclude
+>  "minutesDuration" : "<positiveInt>", // Can be less than start/end (e.g. estimate)
+>  "requestedPeriod" : [{ Period }], // Potential date/time interval(s) requested to allocate the appointment within
+>  "slot" : [{ Reference(Slot) }], // The slots that this appointment is filling
+>  "account" : [{ Reference(Account) }], // The set of accounts that may be used for billing for this Appointment
+>  "created" : "<dateTime>", // The date that this appointment was initially created
+>  "cancellationDate" : "<dateTime>", // I When the appointment was cancelled
+>  "note" : [{ Annotation }], // Additional comments
+>  "patientInstruction" : [{ CodeableReference(Binary|Communication|
+>   DocumentReference) }], // Detailed information and instructions for the patient
+>  "basedOn" : [{ Reference(CarePlan|DeviceRequest|MedicationRequest|
+>   ServiceRequest) }], // The request this appointment is allocated to assess
+>  "subject" : { Reference(Group|Patient) }, // The patient or group associated with the appointment
+>  "participant" : [{ // R!  Participants involved in appointment
+>    "type" : [{ CodeableConcept }], // I Role of participant in the appointment
+>    "period" : { Period }, // Participation period of the actor
+>    "actor" : { Reference(CareTeam|Device|Group|HealthcareService|Location|
+>    Patient|Practitioner|PractitionerRole|RelatedPerson) }, // I The individual, device, location, or service participating in the appointment
+>    "required" : <boolean>, // The participant is required to attend (optional when false)
+>    "status" : "<code>" // R!  accepted | declined | tentative | needs-action
+>  }],
+>  "recurrenceId" : "<positiveInt>", // The sequence number in the recurrence
+>  "occurrenceChanged" : <boolean>, // Indicates that this appointment varies from a recurrence pattern
+>  "recurrenceTemplate" : [{ // I Details of the recurrence pattern/template used to generate occurrences
+>    "timezone" : { CodeableConcept }, // The timezone of the occurrences
+>    "recurrenceType" : { CodeableConcept }, // R!  The frequency of the recurrence
+>    "lastOccurrenceDate" : "<date>", // The date when the recurrence should end
+>    "occurrenceCount" : "<positiveInt>", // The number of planned occurrences
+>    "occurrenceDate" : ["<date>"], // Specific dates for a recurring set of appointments (no template)
+>    "weeklyTemplate" : { // Information about weekly recurring appointments
+>      "monday" : <boolean>, // Recurs on Mondays
+>      "tuesday" : <boolean>, // Recurs on Tuesday
+>      "wednesday" : <boolean>, // Recurs on Wednesday
+>      "thursday" : <boolean>, // Recurs on Thursday
+>      "friday" : <boolean>, // Recurs on Friday
+>      "saturday" : <boolean>, // Recurs on Saturday
+>      "sunday" : <boolean>, // Recurs on Sunday
+>      "weekInterval" : "<positiveInt>" // Recurs every nth week
+>    },
+>    "monthlyTemplate" : { // Information about monthly recurring appointments
+>      "dayOfMonth" : "<positiveInt>", // Recurs on a specific day of the month
+>      "nthWeekOfMonth" : { Coding }, // Indicates which week of the month the appointment should occur
+>      "dayOfWeek" : { Coding }, // Indicates which day of the week the appointment should occur
+>      "monthInterval" : "<positiveInt>" // R!  Recurs every nth month
+>    },
+>    "yearlyTemplate" : { // Information about yearly recurring appointments
+>      "yearInterval" : "<positiveInt>" // R!  Recurs every nth year
+>    },
+>    "excludingDate" : ["<date>"], // Any dates that should be excluded from the series
+>    "excludingRecurrenceId" : ["<positiveInt>"] // Any recurrence IDs that should be excluded from the recurrence
+>  }]
+>}
+>```
+>
+>Real data example
+>```json
+>{
+>  "resourceType" : "Appointment",
+>  "id" : "example",
+>  "status" : "booked",
+>  "class" : [{
+>    "coding" : [{
+>      "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+>      "code" : "AMB",
+>      "display" : "ambulatory"
+>    }]
+>  }],
+>  "serviceCategory" : [{
+>    "coding" : [{
+>      "system" : "http://example.org/service-category",
+>      "code" : "gp",
+>      "display" : "General Practice"
+>    }]
+>  }],
+>  "serviceType" : [{
+>    "concept" : {
+>      "coding" : [{
+>        "code" : "52",
+>        "display" : "General Discussion"
+>      }]
+>    }
+>  }],
+>  "specialty" : [{
+>    "coding" : [{
+>      "system" : "http://snomed.info/sct",
+>      "code" : "394814009",
+>      "display" : "General practice"
+>    }]
+>  }],
+>  "appointmentType" : {
+>    "coding" : [{
+>      "system" : "http://terminology.hl7.org/CodeSystem/v2-0276",
+>      "code" : "FOLLOWUP",
+>      "display" : "A follow up visit from a previous appointment"
+>    }]
+>  },
+>  "reason" : [{
+>    "reference" : {
+>      "reference" : "Condition/example",
+>      "display" : "Severe burn of left ear"
+>    }
+>  }],
+>  "description" : "Discussion on the results of your recent MRI",
+>  "start" : "2013-12-10T09:00:00Z",
+>  "end" : "2013-12-10T11:00:00Z",
+>  "created" : "2013-10-10",
+>  "note" : [{
+>    "text" : "Further expand on the results of the MRI and determine the next actions that may be appropriate."
+>  }],
+>  "patientInstruction" : [{
+>    "concept" : {
+>      "text" : "Please avoid excessive travel (specifically flying) before this appointment"
+>    }
+>  }],
+>  "basedOn" : [{
+>    "reference" : "ServiceRequest/myringotomy"
+>  }],
+>  "subject" : {
+>    "reference" : "Patient/example",
+>    "display" : "Peter James Chalmers"
+>  },
+>  "participant" : [{
+>    "actor" : {
+>      "reference" : "Patient/example",
+>      "display" : "Peter James Chalmers"
+>    },
+>    "required" : true,
+>    "status" : "accepted"
+>  },
+>  {
+>    "type" : [{
+>      "coding" : [{
+>        "system" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+>        "code" : "ATND"
+>      }]
+>    }],
+>    "actor" : {
+>      "reference" : "Practitioner/example",
+>      "display" : "Dr Adam Careful"
+>    },
+>    "required" : true,
+>    "status" : "accepted"
+>  },
+>  {
+>    "actor" : {
+>      "reference" : "Location/1",
+>      "display" : "South Wing, second floor"
+>    },
+>    "required" : true,
+>    "status" : "accepted"
+>  }]
+>}
+>```
+></details>
+
+&nbsp;
+
+#### 2. [AppointmentResponse](https://hl7.org/fhir/appointmentresponse.html)
+Reference resource type:
+* `Appointment`
+<details>
+<summary>AppointmentResponse scheme</summary>
+A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.
+
+<br>Appointment resources are used to provide information about a planned meeting that may be in the future or past. They may be for a single meeting or for a series of repeating visits. Examples include a scheduled surgery, a follow-up for a clinical visit, a scheduled conference call between clinicians to discuss a case, the reservation of a piece of diagnostic equipment for a particular use, etc. The visit scheduled by an appointment may be in person or remote (by phone, video conference, etc.) All that matters is that the time and usage of one or more individuals, locations and/or pieces of equipment is being fully or partially reserved for a designated period of time.
+
+<br>This definition takes the concepts of appointments in a clinical setting and also extends them to be relevant in the community healthcare space, and also ease exposure to other appointment / calendar standards widely used outside of Healthcare.
+
+For more details for each data type of the schema, please see [here](https://hl7.org/fhir/appointmentresponse.html).
+```json
+{
+  "resourceType" : "AppointmentResponse",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // External Ids for this item
+  "appointment" : { Reference(Appointment) }, // R!  Appointment this response relates to
+  "proposedNewTime" : <boolean>, // Indicator for a counter proposal
+  "start" : "<instant>", // Time from appointment, or requested new start time
+  "end" : "<instant>", // Time from appointment, or requested new end time
+  "participantType" : [{ CodeableConcept }], // I Role of participant in the appointment
+  "actor" : { Reference(Device|Group|HealthcareService|Location|Patient|
+   Practitioner|PractitionerRole|RelatedPerson) }, // I Person(s), Location, HealthcareService, or Device
+  "participantStatus" : "<code>", // R!  accepted | declined | tentative | needs-action | entered-in-error
+  "comment" : "<markdown>", // Additional comments
+  "recurring" : <boolean>, // This response is for all occurrences in a recurring request
+  "occurrenceDate" : "<date>", // Original date within a recurring request
+  "recurrenceId" : "<positiveInt>" // The recurrence ID of the specific recurring request
+}
+```
+
+Real data example
+```json
+{
+  "resourceType" : "AppointmentResponse",
+  "id" : "example",
+  "appointment" : {
+    "reference" : "Appointment/example",
+    "display" : "Brian MRI results discussion"
+  },
+  "actor" : {
+    "reference" : "Patient/example",
+    "display" : "Peter James Chalmers"
+  },
+  "participantStatus" : "accepted"
+}
+```
+</details>
+
+&nbsp;
+
+#### 3. [Schedule](https://hl7.org/fhir/schedule.html)
+Reference resource type:
+* `CareTeam|Device|HealthcareService|Location|Patient|Practitioner|PractitionerRole|RelatedPerson`
+<details>
+<summary>Schedule scheme</summary>
+A container for slots of time that may be available for booking appointments.
+
+<br>Schedule resources provide a container for time-slots that can be booked using an appointment.
+It provides the window of time (period) that slots are defined for and what type of appointments can be booked. The schedule does not provide any information about actual appointments.
+This separation greatly assists where access to the appointments would not be permitted for security or privacy reasons, while still being able to determine if an appointment might be available.
+
+<br>Note: A schedule is not used for the delivery of medication, the Timing data type should be used for that purpose.
+
+For more details for each data type of the schema, please see [here](https://hl7.org/fhir/schedule.html).
+```json
+{
+  "resourceType" : "Schedule",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // External Ids for this item
+  "active" : <boolean>, // Whether this schedule is in active use
+  "serviceCategory" : [{ CodeableConcept }], // High-level category
+  "serviceType" : [{ CodeableReference(HealthcareService) }], // Specific service
+  "specialty" : [{ CodeableConcept }], // Type of specialty needed
+  "name" : "<string>", // Human-readable label
+  "actor" : [{ Reference(CareTeam|Device|HealthcareService|Location|Patient|
+   Practitioner|PractitionerRole|RelatedPerson) }], // R!  Resource(s) that availability information is being provided for
+  "planningHorizon" : { Period }, // Period of time covered by schedule
+  "comment" : "<markdown>" // Comments on availability
+}
+```
+
+Real data example
+```json
+{
+  "resourceType" : "Schedule",
+  "id" : "example",
+  "identifier" : [{
+    "use" : "usual",
+    "system" : "http://example.org/scheduleid",
+    "value" : "45"
+  }],
+  "active" : true,
+  "serviceCategory" : [{
+    "coding" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/service-category",
+      "code" : "17",
+      "display" : "General Practice"
+    }]
+  }],
+  "serviceType" : [{
+    "concept" : {
+      "coding" : [{
+        "system" : "http://terminology.hl7.org/CodeSystem/service-type",
+        "code" : "57",
+        "display" : "Immunization"
+      }]
+    }
+  }],
+  "specialty" : [{
+    "coding" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "408480009",
+      "display" : "Clinical immunology"
+    }]
+  }],
+  "name" : "Burgers UMC, South Wing - Immunizations",
+  "actor" : [{
+    "reference" : "Location/1",
+    "display" : "Burgers UMC, South Wing, second floor"
+  }],
+  "planningHorizon" : {
+    "start" : "2013-12-25T09:15:00Z",
+    "end" : "2013-12-25T09:30:00Z"
+  },
+  "comment" : "The slots attached to this schedule should be specialized to cover immunizations within the clinic"
+}
+```
+</details>
+
+
+&nbsp;
+
+#### 4. [Slot](https://hl7.org/fhir/slot.html)
+Reference resource type:
+* `Schehdule`
+<details>
+<summary>Slot scheme</summary>
+A slot of time on a schedule that may be available for booking appointments.
+
+<br>Slot resources are used to provide time-slots that can be booked using an appointment.
+They do not provide any information about appointments that are available, just the time, and optionally what the time can be used for.
+These are effectively spaces of free/busy time.
+Slots can also be marked as busy without having appointments associated.
+
+For more details for each data type of the schema, please see [here](https://hl7.org/fhir/slot.html).
+```json
+{
+  "resourceType" : "Slot",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // External Ids for this item
+  "serviceCategory" : [{ CodeableConcept }], // A broad categorization of the service that is to be performed during this appointment
+  "serviceType" : [{ CodeableReference(HealthcareService) }], // The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the Schedule resource
+  "specialty" : [{ CodeableConcept }], // The specialty of a practitioner that would be required to perform the service requested in this appointment
+  "appointmentType" : [{ CodeableConcept }], // The style of appointment or patient that may be booked in the slot (not service type) icon
+  "schedule" : { Reference(Schedule) }, // R!  The schedule resource that this slot defines an interval of status information
+  "status" : "<code>", // R!  busy | free | busy-unavailable | busy-tentative | entered-in-error
+  "start" : "<instant>", // R!  Date/Time that the slot is to begin
+  "end" : "<instant>", // R!  Date/Time that the slot is to conclude
+  "overbooked" : <boolean>, // This slot has already been overbooked, appointments are unlikely to be accepted for this time
+  "comment" : "<string>" // Comments on the slot to describe any extended information. Such as custom constraints on the slot
+}
+```
+
+Real data example
+```json
+{
+  "resourceType" : "Slot",
+  "id" : "example",
+  "serviceCategory" : [{
+    "coding" : [{
+      "code" : "17",
+      "display" : "General Practice"
+    }]
+  }],
+  "serviceType" : [{
+    "concept" : {
+      "coding" : [{
+        "code" : "57",
+        "display" : "Immunization"
+      }]
+    }
+  }],
+  "specialty" : [{
+    "coding" : [{
+      "code" : "408480009",
+      "display" : "Clinical immunology"
+    }]
+  }],
+  "appointmentType" : [{
+    "coding" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/v2-0276",
+      "code" : "WALKIN",
+      "display" : "A previously unscheduled walk-in visit"
+    }]
+  }],
+  "schedule" : {
+    "reference" : "Schedule/example"
+  },
+  "status" : "free",
+  "start" : "2013-12-25T09:15:00Z",
+  "end" : "2013-12-25T09:30:00Z",
+  "comment" : "Assessments should be performed before requesting appointments in this slot."
+}
+```
+</details>
+
+&nbsp;
+
+#### 5. [VerificationResult](https://hl7.org/fhir/verificationresult.html)
+<details>
+<summary>VerificationResult scheme</summary>
+Describes validation requirements, source(s), status and dates for one or more elements.  
+
+<br>The VerificationResult can be used where content (such as found in a directory) is aggregated between systems, and the details and results of this verification process needs to be recorded, to determine the likely accuracy/confidence in the content.
+It does not represent the workflows or tasks related, but does cover the result of who did what when, why, and when it needs to be done again.
+
+There are often multiple instances of the VerificationResult over time that reference the same resource, even if the resource has not changed, as the content was verified as still current. Alternately the process may discover that the content was no longer valid (i.e. the practitioner was not able to be verified was still working at the location) and therefore the instance could be updated to not be active, or even removed from the directory.
+
+For more details for each data type of the schema, please see [here](https://hl7.org/fhir/verificationresult.html).
+```json
+{
+  "resourceType" : "VerificationResult",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "target" : [{ Reference(Any) }], // A resource that was validated
+  "targetLocation" : ["<string>"], // The fhirpath location(s) within the resource that was validated
+  "need" : { CodeableConcept }, // none | initial | periodic
+  "status" : "<code>", // R!  attested | validated | in-process | req-revalid | val-fail | reval-fail | entered-in-error
+  "statusDate" : "<dateTime>", // When the validation status was updated
+  "validationType" : { CodeableConcept }, // nothing | primary | multiple
+  "validationProcess" : [{ CodeableConcept }], // The primary process by which the target is validated (edit check; value set; primary source; multiple sources; standalone; in context)
+  "frequency" : { Timing }, // Frequency of revalidation
+  "lastPerformed" : "<dateTime>", // The date/time validation was last completed (including failed validations)
+  "nextScheduled" : "<date>", // The date when target is next validated, if appropriate
+  "failureAction" : { CodeableConcept }, // fatal | warn | rec-only | none
+  "primarySource" : [{ // Information about the primary source(s) involved in validation
+    "who" : { Reference(Organization|Practitioner|PractitionerRole) }, // Reference to the primary source
+    "type" : [{ CodeableConcept }], // Type of primary source (License Board; Primary Education; Continuing Education; Postal Service; Relationship owner; Registration Authority; legal source; issuing source; authoritative source)
+    "communicationMethod" : [{ CodeableConcept }], // Method for exchanging information with the primary source
+    "validationStatus" : { CodeableConcept }, // successful | failed | unknown
+    "validationDate" : "<dateTime>", // When the target was validated against the primary source
+    "canPushUpdates" : { CodeableConcept }, // yes | no | undetermined
+    "pushTypeAvailable" : [{ CodeableConcept }] // specific | any | source
+  }],
+  "attestation" : { // Information about the entity attesting to information
+    "who" : { Reference(Organization|Practitioner|PractitionerRole) }, // The individual or organization attesting to information
+    "onBehalfOf" : { Reference(Organization|Practitioner|PractitionerRole) }, // When the who is asserting on behalf of another (organization or individual)
+    "communicationMethod" : { CodeableConcept }, // The method by which attested information was submitted/retrieved
+    "date" : "<date>", // The date the information was attested to
+    "sourceIdentityCertificate" : "<string>", // A digital identity certificate associated with the attestation source
+    "proxyIdentityCertificate" : "<string>", // A digital identity certificate associated with the proxy entity submitting attested information on behalf of the attestation source
+    "proxySignature" : { Signature }, // Proxy signature (digital or image)
+    "sourceSignature" : { Signature } // Attester signature (digital or image)
+  },
+  "validator" : [{ // Information about the entity validating information
+    "organization" : { Reference(Organization) }, // R!  Reference to the organization validating information
+    "identityCertificate" : "<string>", // A digital identity certificate associated with the validator
+    "attestationSignature" : { Signature } // Validator signature (digital or image)
+  }]
+}
+```
+
+Real data example
+```json
+{
+  "resourceType" : "VerificationResult",
+  "id" : "example",
+  "status" : "attested"
+}
+```
+</details>
+
+
+&nbsp;
+
+&nbsp;
+
+
+
+
+### Others
+#### 1. [Patient](https://hl7.org/fhir/patient.html)
 <details>
 <summary>Patient scheme</summary>
 
@@ -56,33 +541,7 @@ For more details for each data type of the schema, please see [here](https://hl7
 
 &nbsp;
 
-### 2. [Schedule](https://hl7.org/fhir/schedule.html)
-<details>
-<summary>Schedule scheme</summary>
-
-For more details for each data type of the schema, please see [here](https://hl7.org/fhir/schedule.html).
-```json
-{
-  "resourceType" : "Schedule",
-  // from Resource: id, meta, implicitRules, and language
-  // from DomainResource: text, contained, extension, and modifierExtension
-  "identifier" : [{ Identifier }], // External Ids for this item
-  "active" : <boolean>, // Whether this schedule is in active use
-  "serviceCategory" : [{ CodeableConcept }], // High-level category
-  "serviceType" : [{ CodeableReference(HealthcareService) }], // Specific service
-  "specialty" : [{ CodeableConcept }], // Type of specialty needed
-  "name" : "<string>", // Human-readable label
-  "actor" : [{ Reference(CareTeam|Device|HealthcareService|Location|Patient|
-   Practitioner|PractitionerRole|RelatedPerson) }], // R!  Resource(s) that availability information is being provided for
-  "planningHorizon" : { Period }, // Period of time covered by schedule
-  "comment" : "<markdown>" // Comments on availability
-}
-```
-</details>
-
-&nbsp;
-
-### 3. [Location](https://hl7.org/fhir/location.html)
+#### 2. [Location](https://hl7.org/fhir/location.html)
 <details>
 <summary>Location scheme</summary>
 
@@ -117,4 +576,3 @@ For more details for each data type of the schema, please see [here](https://hl7
 }
 ```
 </details>
-
