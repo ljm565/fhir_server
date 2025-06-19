@@ -5,17 +5,14 @@ Since we can also integrate PostgreSQL with a local FHIR server, medical data ca
 &nbsp;
 
 ### Recent updates 📣
-* *June 2025 (v1.0.1)*: Add an example of a `Location` resource type.
+* *June 2025 (v1.1.0)*: Added explanations about *Workflow* resource types.
+* *June 2025 (v1.0.1)*: Added an example of a `Location` resource type.
 * *June 2025 (v1.0.0)*: Documents updated.
 * *June 2025 (v0.0.1)*: Completed FHIR server running test. 
 
 &nbsp;
 
 &nbsp;
-
-
-
-
 
 
 ## Quick Starts 🚀
@@ -39,10 +36,6 @@ docker run --name fhir_server -p 8080:8080 hapiproject/hapi:latest
 &nbsp;
 
 &nbsp;
-
-<!-- ## Bug Reports
-If an error occurs while executing the code, check if any of the cases below apply.
-* [Bug Cases](./docs/bugs.md) -->
 
 
 ## References 📚
