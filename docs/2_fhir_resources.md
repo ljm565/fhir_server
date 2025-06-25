@@ -1174,7 +1174,97 @@ Reference resource type:
 
 &nbsp;
 
-#### 2. [Location](https://hl7.org/fhir/location.html)
+#### 2. [Practitioner](https://hl7.org/fhir/practitioner.html)
+><details>
+><summary>Practitioner scheme</summary>
+>A person who is directly or indirectly involved in the provisioning of healthcare or related services.
+>
+><br>Practitioner covers all individuals who are engaged in the healthcare process and healthcare-related services as part of their formal responsibilities and this Resource is used for attribution of activities and responsibilities to these individuals.
+>
+>For more details for each data type of the schema, please see [here](https://hl7.org/fhir/practitioner.html).
+>```json
+>{
+>  "resourceType" : "Practitioner",
+>  // from Resource: id, meta, implicitRules, and language
+>  // from DomainResource: text, contained, extension, and modifierExtension
+>  "identifier" : [{ Identifier }], // An identifier for the person as this agent
+>  "active" : <boolean>, // Whether this practitioner's record is in active use
+>  "name" : [{ HumanName }], // The name(s) associated with the practitioner
+>  "telecom" : [{ ContactPoint }], // A contact detail for the practitioner (that apply to all roles)
+>  "gender" : "<code>", // male | female | other | unknown
+>  "birthDate" : "<date>", // The date  on which the practitioner was born
+>  // deceased[x]: Indicates if the practitioner is deceased or not. One of these 2:
+>  "deceasedBoolean" : <boolean>,
+>  "deceasedDateTime" : "<dateTime>",
+>  "address" : [{ Address }], // Address(es) of the practitioner that are not role specific (typically home address)
+>  "photo" : [{ Attachment }], // Image of the person
+>  "qualification" : [{ // Qualifications, certifications, accreditations, licenses, training, etc. pertaining to the provision of care
+>    "identifier" : [{ Identifier }], // An identifier for this qualification for the practitioner
+>    "code" : { CodeableConcept }, // R!  Coded representation of the qualification icon
+>    "period" : { Period }, // Period during which the qualification is valid
+>    "issuer" : { Reference(Organization) } // Organization that regulates and issues the qualification
+>  }],
+>  "communication" : [{ // A language which may be used to communicate with the practitioner
+>    "language" : { CodeableConcept }, // R!  The language code used to communicate with the practitioner
+>    "preferred" : <boolean> // Language preference indicator
+>  }]
+>}
+>```
+>
+>Real data example
+>```json
+>{
+>  "resourceType" : "Practitioner",
+>  "id" : "example",
+>  "text" : {
+>    "status" : "generated",
+>    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Dr Adam Careful is a Referring Practitioner for Acme Hospital from 1-Jan 2012 to 31-Mar\n        2012</p>\n    </div>"
+>  },
+>  "identifier" : [{
+>    "system" : "http://www.acme.org/practitioners",
+>    "value" : "23"
+>  }],
+>  "active" : true,
+>  "name" : [{
+>    "family" : "Careful",
+>    "given" : ["Adam"],
+>    "prefix" : ["Dr"]
+>  }],
+>  "address" : [{
+>    "use" : "home",
+>    "line" : ["534 Erewhon St"],
+>    "city" : "PleasantVille",
+>    "state" : "Vic",
+>    "postalCode" : "3999"
+>  }],
+>  "qualification" : [{
+>    "identifier" : [{
+>      "system" : "http://example.org/UniversityIdentifier",
+>      "value" : "12345"
+>    }],
+>    "code" : {
+>      "coding" : [{
+>        "system" : "http://terminology.hl7.org/CodeSystem/v2-0360/2.7",
+>        "code" : "BS",
+>        "display" : "Bachelor of Science"
+>      }],
+>      "text" : "Bachelor of Science"
+>    },
+>    "period" : {
+>      "start" : "1995"
+>    },
+>    "issuer" : {
+>      "display" : "Example University"
+>    }
+>  }]
+>}
+>```
+></details>
+
+&nbsp;
+
+
+#### 3. [Location](https://hl7.org/fhir/location.html)
 ><details>
 ><summary>Location scheme</summary>
 >Details and position information for a place where services are provided and resources and participants may be stored, found, contained, or accommodated.
