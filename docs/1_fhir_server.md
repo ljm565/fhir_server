@@ -59,6 +59,29 @@ configs:
 ```
 </details>
 
+<br>
+Then, you can choose FHIR version (e.g., R4 (stable), R5).
+Here, we provide R5 FHIR version as a default.
+<details>
+<summary><code>hapi.application.yml</code></summary>
+
+```yaml
+spring:
+  datasource:
+    url: 'jdbc:postgresql://db:5432/hapi'
+    username: admin
+    password: admin
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
+      hibernate.search.enabled: false
+hapi:
+  fhir:
+    fhir_version: R5
+```
+</details>
+
 <br>After completing the `docker-compose.yml` file, you can run a FHIR server using it. Then you are able to access a FHIR server at `localhost:8080` once it's running.
 ```bash
 # Base execution
