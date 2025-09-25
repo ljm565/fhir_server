@@ -5,6 +5,7 @@ Since we can also integrate PostgreSQL with a local FHIR server, medical data ca
 &nbsp;
 
 ### Recent updates 📣
+* *September 2025 (v1.2.0)*: Supported R5 version of FHIR.
 * *June 2025 (v1.1.2)*: Added explanations about *PractitionerRole* resource type.
 * *June 2025 (v1.1.1)*: Added explanations about *Practitioner* resource type.
 * *June 2025 (v1.1.0)*: Added explanations about *Workflow* resource types.
