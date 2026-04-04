@@ -1912,3 +1912,516 @@ Reference resource type:
 
 
 &nbsp;
+
+
+
+><details>
+><summary>ActivityDefinition scheme</summary>
+>This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.
+>
+><br>An ActivityDefinition is a shareable, consumable description of some activity to be performed. It may be used to specify actions to be taken as part of a workflow, order set, or protocol, or it may be used independently as part of a catalog of activities such as orderables.
+>
+>For more details for each data type of the schema, please see [here](https://hl7.org/fhir/activitydefinition.html).
+>```json
+>{
+>  "resourceType" : "ActivityDefinition",
+>  // from Resource: id, meta, implicitRules, and language
+>  // from DomainResource: text, contained, extension, and modifierExtension
+>  "url" : "<uri>", // Canonical identifier for this activity definition, represented as a URI (globally unique)
+>  "identifier" : [{ Identifier }], // Additional identifier for the activity definition
+>  "version" : "<string>", // Business version of the activity definition
+>  // versionAlgorithm[x]: How to compare versions. One of these 2:
+>  "versionAlgorithmString" : "<string>",
+>  "versionAlgorithmCoding" : { Coding },
+>  "name" : "<string>", // I Name for this activity definition (computer friendly)
+>  "title" : "<string>", // Name for this activity definition (human friendly)
+>  "subtitle" : "<string>", // Subordinate title of the activity definition
+>  "status" : "<code>", // R!  draft | active | retired | unknown
+>  "experimental" : <boolean>, // For testing purposes, not real usage
+>  // subject[x]: Type of individual the activity definition is intended for. One of these 3:
+>  "subjectCodeableConcept" : { CodeableConcept },
+>  "subjectReference" : { Reference(AdministrableProductDefinition|Group|
+>   ManufacturedItemDefinition|MedicinalProductDefinition|
+>   PackagedProductDefinition|SubstanceDefinition) },
+>  "subjectCanonical" : "<canonical(EvidenceVariable)>",
+>  "date" : "<dateTime>", // Date last changed
+>  "publisher" : "<string>", // Name of the publisher/steward (organization or individual)
+>  "contact" : [{ ContactDetail }], // Contact details for the publisher
+>  "description" : "<markdown>", // Natural language description of the activity definition
+>  "useContext" : [{ UsageContext }], // The context that the content is intended to support
+>  "jurisdiction" : [{ CodeableConcept }], // Intended jurisdiction for activity definition (if applicable)
+>  "purpose" : "<markdown>", // Why this activity definition is defined
+>  "usage" : "<markdown>", // Describes the clinical usage of the activity definition
+>  "copyright" : "<markdown>", // Use and/or publishing restrictions
+>  "copyrightLabel" : "<string>", // Copyright holder and year(s)
+>  "approvalDate" : "<date>", // When the activity definition was approved by publisher
+>  "lastReviewDate" : "<date>", // When the activity definition was last reviewed by the publisher
+>  "effectivePeriod" : { Period }, // When the activity definition is expected to be used
+>  "topic" : [{ CodeableConcept }], // E.g. Education, Treatment, Assessment, etc
+>  "author" : [{ ContactDetail }], // Who authored the content
+>  "editor" : [{ ContactDetail }], // Who edited the content
+>  "reviewer" : [{ ContactDetail }], // Who reviewed the content
+>  "endorser" : [{ ContactDetail }], // Who endorsed the content
+>  "relatedArtifact" : [{ RelatedArtifact }], // Additional documentation, citations, etc
+>  "library" : ["<canonical(Library)>"], // Logic used by the activity definition
+>  "kind" : "<code>", // Kind of resource
+>  "profile" : "<canonical(StructureDefinition)>", // What profile the resource needs to conform to
+>  "code" : { CodeableConcept }, // Detail type of activity
+>  "intent" : "<code>", // proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option
+>  "priority" : "<code>", // routine | urgent | asap | stat
+>  "doNotPerform" : <boolean>, // True if the activity should not be performed
+>  // timing[x]: When activity is to occur. One of these 4:
+>  "timingTiming" : { Timing },
+>  "timingAge" : { Age },
+>  "timingRange" : { Range },
+>  "timingDuration" : { Duration },
+>  // asNeeded[x]: Preconditions for service. One of these 2:
+>  "asNeededBoolean" : <boolean>,
+>  "asNeededCodeableConcept" : { CodeableConcept },
+>  "location" : { CodeableReference(Location) }, // Where it should happen
+>  "participant" : [{ // Who should participate in the action
+>    "type" : "<code>", // careteam | device | group | healthcareservice | location | organization | patient | practitioner | practitionerrole | relatedperson
+>    "typeCanonical" : "<canonical(CapabilityStatement)>", // Who or what can participate
+>    "typeReference" : { Reference(CareTeam|Device|DeviceDefinition|Endpoint|
+>    Group|HealthcareService|Location|Organization|Patient|Practitioner|
+>    PractitionerRole|RelatedPerson) }, // Who or what can participate
+>    "role" : { CodeableConcept }, // E.g. Nurse, Surgeon, Parent, etc icon
+>    "function" : { CodeableConcept } // E.g. Author, Reviewer, Witness, etc
+>  }],
+>  // product[x]: What's administered/supplied. One of these 2:
+>  "productReference" : { Reference(Ingredient|Medication|Substance|
+>   SubstanceDefinition) },
+>  "productCodeableConcept" : { CodeableConcept },
+>  "quantity" : { Quantity(SimpleQuantity) }, // How much is administered/consumed/supplied
+>  "dosage" : [{ Dosage }], // Detailed dosage instructions
+>  "bodySite" : [{ CodeableConcept }], // What part of body to perform on
+>  "specimenRequirement" : ["<canonical(SpecimenDefinition)>"], // What specimens are required to perform this action
+>  "observationRequirement" : ["<canonical(ObservationDefinition)>"], // What observations are required to perform this action
+>  "observationResultRequirement" : ["<canonical(ObservationDefinition)>"], // What observations must be produced by this action
+>  "transform" : "<canonical(StructureMap)>", // Transform to apply the template
+>  "dynamicValue" : [{ // Dynamic aspects of the definition
+>    "path" : "<string>", // R!  The path to the element to be set dynamically
+>    "expression" : { Expression } // R!  An expression that provides the dynamic value for the customization
+>  }]
+>}
+>```
+>
+>Real data example
+>```json
+>{
+>  "resourceType" : "ActivityDefinition",
+>  "id" : "referralPrimaryCareMentalHealthEx",
+>  "text" : {
+>    "status" : "generated",
+>    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Id: </b>\n               </td>\n            </tr>\n            <tr>\n               <td style=\"padding-left: 25px; padding-right: 25px;\">ActivityDefinition/referralPrimaryCareMentalHealth</td>\n            </tr>\n         </table>\n         <p/>\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Status: </b>\n               </td>\n            </tr>\n            <tr>\n               <td style=\"padding-left: 25px; padding-right: 25px;\">draft</td>\n            </tr>\n         </table>\n         <p/>\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Description: </b>\n               </td>\n            </tr>\n            <tr>\n               <td style=\"padding-left: 25px; padding-right: 25px;\">refer to primary care mental-health integrated care program for evaluation and treatment of mental health conditions now</td>\n            </tr>\n         </table>\n         <p/>\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Category: </b>\n               </td>\n            </tr>\n            <tr>\n               <td style=\"padding-left: 25px; padding-right: 25px;\">referral</td>\n            </tr>\n         </table>\n         <p/>\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Code: </b>\n               </td>\n            </tr>\n            <tr>\n               <td style=\"padding-right: 25px;\">\n                  <span style=\"padding-left: 25px;\">\n                     <b>text: </b>\n                     <span>Referral to service (procedure)</span>\n                     <br/>\n                  </span>\n                  <span>\n                     <span>\n                        <span style=\"padding-left: 25px;\">\n                           <b>system: </b>\n                           <span>http://snomed.info/sct</span>\n                           <br/>\n                        </span>\n                        <span style=\"padding-left: 25px;\">\n                           <b>code: </b>\n                           <span>306206005</span>\n                           <br/>\n                        </span>\n                     </span>\n                  </span>\n               </td>\n            </tr>\n         </table>\n         <p/>\n         <table class=\"grid dict\">\n            <tr>\n               <td>\n                  <b>Participant: </b>\n               </td>\n            </tr>\n            <tr style=\"vertical-align: top;\">\n               <td style=\"padding-left: 25px; padding-right: 25px;\">practitioner</td>\n            </tr>\n         </table>\n      </div>"
+>  },
+>  "url" : "http://motivemi.com/artifacts/ActivityDefinition/referralPrimaryCareMentalHealthEx",
+>  "identifier" : [{
+>    "system" : "urn:ietf:rfc:3986",
+>    "value" : "urn:oid:2.16.840.1.113883.4.642.19.8"
+>  },
+>  {
+>    "use" : "official",
+>    "system" : "http://motivemi.com/artifacts",
+>    "value" : "referralPrimaryCareMentalHealth"
+>  }],
+>  "version" : "1.1.0",
+>  "name" : "ReferralPrimaryCareMentalHealth",
+>  "title" : "Referral to Primary Care Mental Health",
+>  "status" : "active",
+>  "experimental" : true,
+>  "date" : "2017-03-03T14:06:00Z",
+>  "publisher" : "Motive Medical Intelligence",
+>  "contact" : [{
+>    "telecom" : [{
+>      "system" : "phone",
+>      "value" : "415-362-4007",
+>      "use" : "work"
+>    },
+>    {
+>      "system" : "email",
+>      "value" : "info@motivemi.com",
+>      "use" : "work"
+>    }]
+>  }],
+>  "description" : "refer to primary care mental-health integrated care program for evaluation and treatment of mental health conditions now",
+>  "useContext" : [{
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "age"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "https://meshb.nlm.nih.gov",
+>        "code" : "D000328",
+>        "display" : "Adult"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "focus"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "87512008",
+>        "display" : "Mild major depression"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "focus"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "40379007",
+>        "display" : "Major depression, recurrent, mild"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "focus"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "225444004",
+>        "display" : "At risk for suicide (finding)"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "focus"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "306206005",
+>        "display" : "Referral to service (procedure)"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "user"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "309343006",
+>        "display" : "Physician"
+>      }]
+>    }
+>  },
+>  {
+>    "code" : {
+>      "system" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+>      "code" : "venue"
+>    },
+>    "valueCodeableConcept" : {
+>      "coding" : [{
+>        "system" : "http://snomed.info/sct",
+>        "code" : "440655000",
+>        "display" : "Outpatient environment"
+>      }]
+>    }
+>  }],
+>  "jurisdiction" : [{
+>    "coding" : [{
+>      "system" : "urn:iso:std:iso:3166",
+>      "code" : "US"
+>    }]
+>  }],
+>  "purpose" : "Defines a referral to a mental-health integrated care program for use in suicide risk order sets. The definition is independent of the order set in which it appears to allow reuse of the general definition of the referrral.",
+>  "usage" : "This activity definition is used as the definition of a referral request within various suicide risk order sets. Elements that apply universally are defined here, while elements that apply to the specific setting of a referral within a particular order set are defined in the order set.",
+>  "copyright" : "© Copyright 2016 Motive Medical Intelligence. All rights reserved.",
+>  "approvalDate" : "2017-03-01",
+>  "lastReviewDate" : "2017-03-01",
+>  "effectivePeriod" : {
+>    "start" : "2017-03-01",
+>    "end" : "2017-12-31"
+>  },
+>  "topic" : [{
+>    "text" : "Mental Health Referral"
+>  }],
+>  "author" : [{
+>    "name" : "Motive Medical Intelligence",
+>    "telecom" : [{
+>      "system" : "phone",
+>      "value" : "415-362-4007",
+>      "use" : "work"
+>    },
+>    {
+>      "system" : "email",
+>      "value" : "info@motivemi.com",
+>      "use" : "work"
+>    }]
+>  }],
+>  "relatedArtifact" : [{
+>    "type" : "citation",
+>    "display" : "Practice Guideline for the Treatment of Patients with Major Depressive Disorder",
+>    "document" : {
+>      "url" : "http://psychiatryonline.org/pb/assets/raw/sitewide/practice_guidelines/guidelines/mdd.pdf"
+>    }
+>  },
+>  {
+>    "type" : "predecessor",
+>    "resource" : "http://example.org/fhir/ActivityDefinition/referralPrimaryCareMentalHealth-initial"
+>  }],
+>  "kind" : "ServiceRequest",
+>  "code" : {
+>    "coding" : [{
+>      "system" : "http://snomed.info/sct",
+>      "code" : "306206005"
+>    }],
+>    "text" : "Referral to service (procedure)"
+>  },
+>  "timingTiming" : {
+>    "_event" : [{
+>      "extension" : [{
+>        "url" : "http://hl7.org/fhir/StructureDefinition/cqf-expression",
+>        "valueExpression" : {
+>          "language" : "text/cql",
+>          "expression" : "Now()"
+>        }
+>      }]
+>    }]
+>  },
+>  "participant" : [{
+>    "type" : "practitioner"
+>  }]
+>}
+>```
+></details>
+
+
+&nbsp;
+
+
+
+
+#### 7. [HealthcareService](https://hl7.org/fhir/healthcareservice.html)
+><details>
+><summary>Device scheme</summary>
+>The details of a healthcare service available at a location.
+>
+><br>The HealthcareService resource is used to describe a single healthcare service or category of services that are provided by an organization at a location.
+The location of the services could be virtual, as with telemedicine services.
+>
+>For more details for each data type of the schema, please see [here](https://hl7.org/fhir/healthcareservice.html).
+>```json
+>{
+>  "resourceType" : "HealthcareService",
+>  // from Resource: id, meta, implicitRules, and language
+>  // from DomainResource: text, contained, extension, and modifierExtension
+>  "identifier" : [{ Identifier }], // External identifiers for this item
+>  "active" : <boolean>, // Whether this HealthcareService record is in active use
+>  "providedBy" : { Reference(Organization) }, // Organization that provides this service
+>  "offeredIn" : [{ Reference(HealthcareService) }], // The service within which this service is offered
+>  "category" : [{ CodeableConcept }], // Broad category of service being performed or delivered
+>  "type" : [{ CodeableConcept }], // Type of service that may be delivered or performed
+>  "specialty" : [{ CodeableConcept }], // Specialties handled by the HealthcareService
+>  "location" : [{ Reference(Location) }], // Location(s) where service may be provided
+>  "name" : "<string>", // Description of service as presented to a consumer while searching
+>  "comment" : "<markdown>", // Additional description and/or any specific issues not covered elsewhere
+>  "extraDetails" : "<markdown>", // Extra details about the service that can't be placed in the other fields
+>  "photo" : { Attachment }, // Facilitates quick identification of the service
+>  "contact" : [{ ExtendedContactDetail }], // Official contact details for the HealthcareService
+>  "coverageArea" : [{ Reference(Location) }], // Location(s) service is intended for/available to
+>  "serviceProvisionCode" : [{ CodeableConcept }], // Conditions under which service is available/offered
+>  "eligibility" : [{ // Specific eligibility requirements required to use the service
+>    "code" : { CodeableConcept }, // Coded value for the eligibility
+>    "comment" : "<markdown>" // Describes the eligibility conditions for the service
+>  }],
+>  "program" : [{ CodeableConcept }], // Programs that this service is applicable to
+>  "characteristic" : [{ CodeableConcept }], // Collection of characteristics (attributes)
+>  "communication" : [{ CodeableConcept }], // The language that this service is offered in
+>  "referralMethod" : [{ CodeableConcept }], // Ways that the service accepts referrals
+>  "appointmentRequired" : <boolean>, // If an appointment is required for access to this service
+>  "availability" : [{ Availability }], // Times the healthcare service is available (including exceptions)
+>  "endpoint" : [{ Reference(Endpoint) }] // Technical endpoints providing access to electronic services operated for the healthcare service
+>}
+>```
+>
+>Real data example
+>```json
+>{
+>  "resourceType" : "HealthcareService",
+>  "id" : "example",
+>  "text" : {
+>    "status" : "generated",
+>    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n\t\t\t25 Dec 2013 9:15am - 9:30am: <b>Busy</b> Physiotherapy\n\t\t</div>"
+>  },
+>  "contained" : [{
+>    "resourceType" : "Location",
+>    "id" : "DenBurg",
+>    "description" : "Greater Denburg area",
+>    "mode" : "instance",
+>    "form" : {
+>      "coding" : [{
+>        "code" : "area",
+>        "display" : "Area"
+>      }]
+>    }
+>  }],
+>  "identifier" : [{
+>    "system" : "http://example.org/shared-ids",
+>    "value" : "HS-12"
+>  }],
+>  "active" : true,
+>  "providedBy" : {
+>    "reference" : "Organization/f001",
+>    "display" : "Burgers University Medical Center"
+>  },
+>  "category" : [{
+>    "coding" : [{
+>      "system" : "http://terminology.hl7.org/CodeSystem/service-category",
+>      "code" : "8",
+>      "display" : "Counselling"
+>    }],
+>    "text" : "Counselling"
+>  }],
+>  "type" : [{
+>    "coding" : [{
+>      "system" : "http://snomed.info/sct",
+>      "code" : "394913002",
+>      "display" : "Psychotherapy"
+>    }]
+>  },
+>  {
+>    "coding" : [{
+>      "system" : "http://snomed.info/sct",
+>      "code" : "394587001",
+>      "display" : "Psychiatry"
+>    }]
+>  }],
+>  "specialty" : [{
+>    "coding" : [{
+>      "system" : "http://snomed.info/sct",
+>      "code" : "47505003",
+>      "display" : "Posttraumatic stress disorder"
+>    }]
+>  }],
+>  "location" : [{
+>    "reference" : "Location/1"
+>  }],
+>  "name" : "Consulting psychologists and/or psychology services",
+>  "comment" : "Providing Specialist psychology services to the greater Den Burg area, many years of experience dealing with PTSD issues",
+>  "extraDetails" : "Several assessments are required for these specialist services, and the waiting times can be greater than 3 months at times. Existing patients are prioritized when requesting appointments on the schedule.",
+>  "contact" : [{
+>    "telecom" : [{
+>      "system" : "phone",
+>      "value" : "(555) silent",
+>      "use" : "work"
+>    },
+>    {
+>      "system" : "email",
+>      "value" : "directaddress@example.com",
+>      "use" : "work"
+>    }]
+>  }],
+>  "coverageArea" : [{
+>    "reference" : "#DenBurg",
+>    "display" : "Greater Denburg area"
+>  }],
+>  "serviceProvisionCode" : [{
+>    "coding" : [{
+>      "system" : "http://terminology.hl7.org/CodeSystem/service-provision-conditions",
+>      "code" : "cost",
+>      "display" : "Fees apply"
+>    }]
+>  }],
+>  "eligibility" : [{
+>    "code" : {
+>      "coding" : [{
+>        "display" : "DVA Required"
+>      }]
+>    },
+>    "comment" : "Evidence of application for DVA status may be sufficient for commencing assessment"
+>  }],
+>  "program" : [{
+>    "text" : "PTSD outreach"
+>  }],
+>  "characteristic" : [{
+>    "coding" : [{
+>      "display" : "Wheelchair access"
+>    }]
+>  }],
+>  "referralMethod" : [{
+>    "coding" : [{
+>      "code" : "phone",
+>      "display" : "Phone"
+>    }]
+>  },
+>  {
+>    "coding" : [{
+>      "code" : "fax",
+>      "display" : "Fax"
+>    }]
+>  },
+>  {
+>    "coding" : [{
+>      "code" : "elec",
+>      "display" : "Secure Messaging"
+>    }]
+>  },
+>  {
+>    "coding" : [{
+>      "code" : "semail",
+>      "display" : "Secure Email"
+>    }]
+>  }],
+>  "appointmentRequired" : false,
+>  "availability" : [{
+>    "availableTime" : [{
+>      "daysOfWeek" : ["wed"],
+>      "allDay" : true
+>    },
+>    {
+>      "daysOfWeek" : ["mon",
+>      "tue",
+>      "thu",
+>      "fri"],
+>      "availableStartTime" : "08:30:00",
+>      "availableEndTime" : "05:30:00"
+>    },
+>    {
+>      "daysOfWeek" : ["sat",
+>      "fri"],
+>      "availableStartTime" : "09:30:00",
+>      "availableEndTime" : "04:30:00"
+>    }],
+>    "notAvailableTime" : [{
+>      "description" : "Christmas/Boxing Day, Reduced capacity is available during the Christmas period",
+>      "during" : {
+>        "start" : "2015-12-25",
+>        "end" : "2015-12-26"
+>      }
+>    },
+>    {
+>      "description" : "New Years Day",
+>      "during" : {
+>        "start" : "2016-01-01",
+>        "end" : "2016-01-01"
+>      }
+>    }]
+>  }],
+>  "endpoint" : [{
+>    "reference" : "Endpoint/example"
+>  }]
+>}
+>```
+></details>
+
+
+&nbsp;
